@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  labels:
+    name: web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: quay.io/myafk/interactive:stable
+        command: ["interactive", "ingress"]
+        ports:
+        - containerPort: 8085
+        env:
+          - name: REDIS_SLAVE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: REDIS_SLAVE_HOST
+          - name: REDIS_MASTER_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: REDIS_MASTER_HOST
+          - name: ELASTICSEARCH_HOSTS
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: ELASTICSEARCH_HOSTS
+          - name: KUBERNETES_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: KUBERNETES_SERVICE_HOST
+          - name: KUBERNETES_SERVICE_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: KUBERNETES_SERVICE_PORT

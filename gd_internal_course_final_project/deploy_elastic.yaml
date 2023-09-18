@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: es01
+  labels:
+    name: es01
+    component: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: es01
+  serviceName: elasticsearch-es
+  template:
+    metadata:
+      labels:
+        app: es01
+    spec:
+      containers:
+      - name: es01
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9200
+          name: http
+        env:
+          - name: node.name
+            value: es01
+          - name: discovery.type
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: discovery.type
+          - name: xpack.security.enabled
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key: xpack.security.enabled
+          - name: cluster.name
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key:  cluster.name
+          - name: bootstrap.memory_lock
+            valueFrom:
+              configMapKeyRef:
+                name: env
+                key:  bootstrap.memory_lock
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+        - name: elasticsearch-data
+          persistentVolumeClaim:
+            claimName: elasticsearch-data-pv
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
