@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: ingress-nginx-a
+spec:
+  ingressClassName: nginx-servicea
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: / 
+        pathType: Prefix
+        backend: 
+          service: 
+            name: nginxservice
+            port: 
+             number: 8085
+

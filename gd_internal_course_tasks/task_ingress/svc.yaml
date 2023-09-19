@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxservice
+spec:
+#  clusterIP: None
+  selector:
+    app: app1
+  ports:
+    - protocol: TCP
+      port: 8085

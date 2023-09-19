@@ -1,0 +1,25 @@
+
+#apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+#    nginx.org/redirect-to-https: "true"
+spec:
+#   tls:
+#  - hosts:
+#    - test.nununi.ai
+#    secretName: ingress-secret-nununi-ai
+  rules:
+  - host: atrofymchuk.pp.ua
+    http:
+      paths:
+        - path: /getTaskAnswer
+          pathType: Prefix
+          backend:
+            service: 
+              name: hello-world-service
+              port: 
+                number: 8085

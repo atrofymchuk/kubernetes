@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-statefulset
+  labels:
+    app: my-app
+  annotations:
+    description: "My statefulset description"
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  replicas: 3
+  serviceName: my-statefulset-service
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: quay.io/myafk/interactive:stable
+        command: ["interactive", "workloads", "-t=first"]
+        env:
+        - name: serviceName
+          value: my-statefulset-service

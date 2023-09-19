@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-app1
+  labels:
+    app: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: pod-app1
+        image: quay.io/myafk/interactive:stable
+        command: ["interactive", "ingress"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8085
