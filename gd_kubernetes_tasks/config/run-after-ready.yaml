@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  run-after-ready.sh: |
+    #!/bin/sh
+    curl -X PUT "localhost:9200/elastic" -H 'Content-Type: application/json' -d'{ "settings" : { "index" : { } }}' &>/dev/null && echo OK || echo FAIL
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: run-after-ready
