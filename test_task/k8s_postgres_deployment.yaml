@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blog-app
+      app: postgres
   template:
     metadata:
       labels:
-        app: blog-app
+        app: postgres
     spec:
       securityContext:
         fsGroup: 999
@@ -51,7 +51,7 @@ metadata:
   name: postgres-service
 spec:
   selector:
-    app: blog-app
+    app: postgres
   ports:
   - protocol: TCP
     port: 5432

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: blog-app
-          image: andreit2/web-blog:0.1
+          image: andreit2/web-blog:0.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
@@ -49,12 +49,13 @@ kind: Service
 metadata:
   name: blog-app-service
 spec:
-  type: LoadBalancer 
+  type: LoadBalancer
+  selector:
+    app: blog-app
   ports:
   - port: 80
     protocol: TCP
     targetPort: 5000
     name: http
-  selector:
-    app: blog-app
+  
   
