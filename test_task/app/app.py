@@ -4,7 +4,6 @@ import os
 
 app = Flask(__name__)
 
-# Database connection details (replace with your actual details or use environment variables)
 DB_HOST = os.environ.get('DATABASE_HOST')
 DB_NAME = os.environ.get('DATABASE_NAME')
 DB_USER = os.environ.get('DATABASE_USER')
@@ -21,9 +20,7 @@ def index():
             password=DB_PASSWORD,
             port=DB_PORT
         )
-        #connection_status = "Connected successfully!"
         cur = conn.cursor()
-        # Example: Execute a query
         cur.execute("SELECT version();")
         db_version = cur.fetchone()
         conn.close()
