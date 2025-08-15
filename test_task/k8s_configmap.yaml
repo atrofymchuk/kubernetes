@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blog-app-config
+  namespace: blog-app
+  labels:
+    app: blog-app
+    environment: production
+  annotations:
+    description: "Configuration for the Blog application"
+    created-by: "Andrii Trofymchuk"
+    managed-by: "Andrii Trofymchuk"
+data:
+  DATABASE_HOST: postgres-service
+  DATABASE_NAME: blogdb
+  APP_ENV: production

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blog-app
+  template:
+    metadata:
+      labels:
+        app: blog-app
+    spec:
+      containers:
+        - name: blog-app
+          image: andreit2/web-blog:0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-app-config
+                  key: DATABASE_HOST
+            - name: DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-app-config
+                  key: DATABASE_NAME
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: blog-secrets
+                  key: DATABASE_USER
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: blog-secrets
+                  key: DATABASE_PASSWORD
+      volumes:
+        - name: blog-app-config-volume
+          configMap:
+            name: blog-app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-app-service
+spec:
+  type: LoadBalancer 
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5000
+    name: http
+  selector:
+    app: blog-app
+  

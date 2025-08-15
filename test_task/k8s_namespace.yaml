@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blog-app
+  labels:
+    app: blog-app
+    environment: production
+  annotations:
+    description: "Namespace for Web blog application deployment"
+    created-by: "Andrii Trofymchuk"
+    managed-by: "Andrii Trofymchuk"
